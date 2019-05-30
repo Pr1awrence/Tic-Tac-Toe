@@ -1,0 +1,13 @@
+.play-field {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 156px;
+  margin: auto;
+  border: 1px solid #000;
+}
+
+.message {
+  width: 125px;
+  margin: 40px auto;
+}

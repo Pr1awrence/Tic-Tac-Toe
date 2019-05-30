@@ -1,0 +1,6 @@
+<h1 class="message">{{message}}</h1>
+<div class="play-field">
+  <div *ngFor="let i of [0,1,2]">
+    <app-game-cell *ngFor="let j of [0,1,2]" [(vertical)]=i [(horizontal)]=j></app-game-cell>
+  </div>
+</div>
