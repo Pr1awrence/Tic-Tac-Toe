@@ -8,7 +8,9 @@ import {Point} from '../../models/point';
   styleUrls: ['./play-field.component.css']
 })
 export class PlayFieldComponent implements OnInit {
-  message = 'Player X';
+  player = 'x';
+  win = false;
+  messageError = '';
 
   constructor(public gameService: GameService) {
   }
@@ -17,5 +19,21 @@ export class PlayFieldComponent implements OnInit {
   }
 
   cellClickHandler(point: Point): void {
+    if (!this.win) {
+      const statusCell = this.gameService.checkArrayNonEmptyCell(point, this.player);
+      if (!statusCell) {
+        this.messageError = 'This cell is already taken';
+      }
+      this.win = this.gameService.checkWin(point, this.player);
+
+      if (statusCell) {
+        this.messageError = '';
+        if (this.player === 'x' && !this.win) {
+          this.player = 'y';
+        } else if (this.player === 'y' && !this.win) {
+          this.player = 'x';
+        }
+      }
+    }
   }
 }

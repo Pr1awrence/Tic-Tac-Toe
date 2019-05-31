@@ -1,8 +1,12 @@
-<h1 class="message">{{message}}</h1>
+<div class="status-message">
+  <h1 *ngIf="!win">Player {{player}}</h1>
+  <h1 *ngIf="win" class="message message--win">Player {{player}} win!</h1>
+</div>
 <div class="play-field">
-  <div *ngFor="let row of gameService.gameGrid; let v = index">
-    <app-game-cell *ngFor="let elem of row; let h = index"
+  <div *ngFor="let row of gameService.gameGrid; let h = index" style="display: inline-flex">
+    <app-game-cell *ngFor="let elem of row; let v = index"
                    [(vertical)]=v [(horizontal)]=h [(element)]=elem
                    (provideCoordinates)="cellClickHandler($event)"></app-game-cell>
   </div>
 </div>
+<h3 class="message message--error" *ngIf="messageError">{{messageError}}</h3>

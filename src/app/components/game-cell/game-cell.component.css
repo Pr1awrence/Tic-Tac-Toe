@@ -8,7 +8,6 @@
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-  transition: all linear .3s;
 }
 
 .game-cell:hover {
