@@ -1,6 +1,7 @@
 <div class="status-message">
-  <h1 *ngIf="!win">Player {{player}}</h1>
+  <h1 *ngIf="!win && !gameDraw">Player {{player}}</h1>
   <h1 *ngIf="win" class="message message--win">Player {{player}} win!</h1>
+  <h1 *ngIf="gameDraw" class="message message--win">Game draw!</h1>
 </div>
 <div class="play-field">
   <div *ngFor="let row of gameService.gameGrid; let h = index" style="display: inline-flex">
@@ -10,3 +11,4 @@
   </div>
 </div>
 <h3 class="message message--error" *ngIf="messageError">{{messageError}}</h3>
+<button class="reset-game" (click)="resetGame()">reset</button>

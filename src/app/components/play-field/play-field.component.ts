@@ -10,7 +10,9 @@ import {Point} from '../../models/point';
 export class PlayFieldComponent implements OnInit {
   player = 'x';
   win = false;
+  gameDraw = false;
   messageError = '';
+  cellFilled = 0;
 
   constructor(public gameService: GameService) {
   }
@@ -27,13 +29,26 @@ export class PlayFieldComponent implements OnInit {
       this.win = this.gameService.checkWin(point, this.player);
 
       if (statusCell) {
+        this.cellFilled++;
         this.messageError = '';
         if (this.player === 'x' && !this.win) {
-          this.player = 'y';
-        } else if (this.player === 'y' && !this.win) {
+          this.player = 'o';
+        } else if (this.player === 'o' && !this.win) {
           this.player = 'x';
         }
       }
+      if (this.cellFilled === 9 && !this.win) {
+        this.gameDraw = true;
+      }
     }
+  }
+
+  resetGame(): void {
+    this.gameService.clearPlayField();
+    this.player = 'x';
+    this.win = false;
+    this.gameDraw = false;
+    this.messageError = '';
+    this.cellFilled = 0;
   }
 }

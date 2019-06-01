@@ -14,8 +14,8 @@ export class GameService {
     if (this.gameGrid[point.horizontal][point.vertical] === '' && player === 'x') {
       this.gameGrid[point.horizontal][point.vertical] = 'x';
       return true;
-    } else if (this.gameGrid[point.horizontal][point.vertical] === '' && player === 'y') {
-      this.gameGrid[point.horizontal][point.vertical] = 'y';
+    } else if (this.gameGrid[point.horizontal][point.vertical] === '' && player === 'o') {
+      this.gameGrid[point.horizontal][point.vertical] = 'o';
       return true;
     } else {
       return false;
@@ -101,12 +101,16 @@ export class GameService {
       }
     }
 
-    for (let k = point.horizontal + 1, l = point.vertical; k < this.gameGrid.length; k++, l--) {
+    for (let k = point.horizontal, l = point.vertical; k < this.gameGrid.length; k++, l--) {
       if (this.gameGrid[k][l] !== player) {
         bottomPartDiag = false;
         break;
       }
     }
     return topPartDiag && bottomPartDiag;
+  }
+
+  clearPlayField(): void {
+    this.gameGrid = [['', '', ''], ['', '', ''], ['', '', '']];
   }
 }
