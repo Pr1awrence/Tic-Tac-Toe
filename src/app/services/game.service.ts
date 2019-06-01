@@ -5,7 +5,6 @@ import {Point} from '../models/point';
   providedIn: 'root'
 })
 export class GameService {
-  public counter = 0;
   public gameGrid: string[][] = [['', '', ''], ['', '', ''], ['', '', '']];
 
   constructor() {
@@ -24,29 +23,90 @@ export class GameService {
   }
 
   checkWin(point: Point, player: string): boolean {
-    this.counter = 0;
 
-    // for top
-    for (let i = 0; i < point.horizontal; i++) {
-      this.counter++;
-      if (this.gameGrid[i][point.vertical] !== player) {
-        return false;
-      }
-    }
+    const vertical = this.checkVertical(point, player);
+    const horizontal = this.checkHorizontal(point, player);
+    const leftDiagonal = this.checkLeftDiagonal(point, player);
+    const rightDiagonal = this.checkRightDiagonal(point, player);
 
-    // for bottom
-    for (let j = point.horizontal; j < this.gameGrid.length; j++) {
-      this.counter++;
-      if (this.gameGrid[j][point.vertical] !== player) {
-        return false;
-      }
-    }
-
-    /*need to add check for 2 diagonals and left-right check!*/
-
-    // for win
-    if (this.counter === 3) {
+    if (vertical || horizontal || leftDiagonal || rightDiagonal) {
       return true;
     }
+  }
+
+  checkVertical(point: Point, player: string): boolean {
+    let topWin = true, bottomWin = true;
+
+    for (let i = point.horizontal - 1; i >= 0; i--) {
+      if (this.gameGrid[i][point.vertical] !== player) {
+        topWin = false;
+        break;
+      }
+    }
+
+    for (let j = point.horizontal; j < this.gameGrid.length; j++) {
+      if (this.gameGrid[j][point.vertical] !== player) {
+        bottomWin = false;
+        break;
+      }
+    }
+    return topWin && bottomWin;
+  }
+
+  checkHorizontal(point: Point, player: string): boolean {
+    let leftWin = true, rightWin = true;
+
+    for (let i = point.vertical - 1; i >= 0; i--) {
+      if (this.gameGrid[point.horizontal][i] !== player) {
+        leftWin = false;
+        break;
+      }
+    }
+
+    for (let j = point.vertical; j < this.gameGrid[point.horizontal].length; j++) {
+      if (this.gameGrid[point.horizontal][j] !== player) {
+        rightWin = false;
+        break;
+      }
+    }
+    return leftWin && rightWin;
+  }
+
+  checkLeftDiagonal(point: Point, player: string): boolean {
+    let topPartDiag = true, bottomPartDiag = true;
+
+    for (let i = point.vertical - 1; i >= 0; i--) {
+      if (this.gameGrid[i][i] !== player) {
+        topPartDiag = false;
+        break;
+      }
+    }
+
+    for (let j = point.vertical; j < this.gameGrid.length; j++) {
+      if (this.gameGrid[j][j] !== player) {
+        bottomPartDiag = false;
+        break;
+      }
+    }
+    return topPartDiag && bottomPartDiag;
+  }
+
+  checkRightDiagonal(point: Point, player: string): boolean {
+    let topPartDiag = true, bottomPartDiag = true;
+
+    for (let i = point.horizontal, j = point.vertical; i >= 0; i--, j++) {
+      if (this.gameGrid[i][j] !== player) {
+        topPartDiag = false;
+        break;
+      }
+    }
+
+    for (let k = point.horizontal + 1, l = point.vertical; k < this.gameGrid.length; k++, l--) {
+      if (this.gameGrid[k][l] !== player) {
+        bottomPartDiag = false;
+        break;
+      }
+    }
+    return topPartDiag && bottomPartDiag;
   }
 }
