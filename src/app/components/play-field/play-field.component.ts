@@ -22,11 +22,11 @@ export class PlayFieldComponent implements OnInit {
 
   cellClickHandler(point: Point): void {
     if (!this.win) {
-      const statusCell = this.gameService.checkArrayNonEmptyCell(point, this.player);
+      const statusCell = this.gameService.putPointIfNotBusy(point, this.player);
       if (!statusCell) {
         this.messageError = 'This cell is already taken';
       }
-      this.win = this.gameService.checkWin(point, this.player);
+      this.win = this.gameService.checkWin();
 
       if (statusCell) {
         this.cellFilled++;

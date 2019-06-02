@@ -6,28 +6,29 @@ import {Point} from '../models/point';
 })
 export class GameService {
   public gameGrid: string[][] = [['', '', ''], ['', '', ''], ['', '', '']];
+  private lastPoint: Point = null;
+  private lastPlayer: string;
 
   constructor() {
   }
 
-  checkArrayNonEmptyCell(point: Point, player: string): boolean {
-    if (this.gameGrid[point.horizontal][point.vertical] === '' && player === 'x') {
-      this.gameGrid[point.horizontal][point.vertical] = 'x';
-      return true;
-    } else if (this.gameGrid[point.horizontal][point.vertical] === '' && player === 'o') {
-      this.gameGrid[point.horizontal][point.vertical] = 'o';
+  putPointIfNotBusy(point: Point, player: string): boolean {
+    if (this.gameGrid[point.horizontal][point.vertical] === '') {
+      this.gameGrid[point.horizontal][point.vertical] = player;
+      this.lastPoint = point;
+      this.lastPlayer = player;
       return true;
     } else {
       return false;
     }
   }
 
-  checkWin(point: Point, player: string): boolean {
+  checkWin(): boolean {
 
-    const vertical = this.checkVertical(point, player);
-    const horizontal = this.checkHorizontal(point, player);
-    const leftDiagonal = this.checkLeftDiagonal(point, player);
-    const rightDiagonal = this.checkRightDiagonal(point, player);
+    const vertical = this.checkVertical(this.lastPoint, this.lastPlayer);
+    const horizontal = this.checkHorizontal(this.lastPoint, this.lastPlayer);
+    const leftDiagonal = this.checkLeftDiagonal(this.lastPoint, this.lastPlayer);
+    const rightDiagonal = this.checkRightDiagonal(this.lastPoint, this.lastPlayer);
 
     if (vertical || horizontal || leftDiagonal || rightDiagonal) {
       return true;
